@@ -58,11 +58,23 @@ def executar_limpeza():
     print("=" * 35)
     print(f"Data:{datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
 
-    pastas = [
-        Path(os.environ.get("TEMP","")),
-        Path(os.environ.get("TMP","")),
-        Path(r"C:\Windows\Temp")
+    candidatas = [
+        os.environ.get("TEMP"),
+        os.environ.get("TMP"),
+        r"C:\Windows\Temp",
     ]
+
+    pastas = []
+    vistas = set()
+
+    for valor in candidatas:
+        if not valor:
+            continue
+        pasta = Path(valor)
+        chave = str(pasta).lower()
+        if chave not in vistas:
+            vistas.add(chave)
+            pastas.append(pasta)
 
     total_apagados = 0
     total_erros = 0
